@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const linkElement = document.querySelector('#link');
 
     const endpoint = `https://api.github.com/users/bcortez-gomes`;
-    console.log("GitHub Token Loaded:", import.meta.env.VITE_GITHUB_TOKEN);
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
-
+    const token = process.env.VITE_GITHUB_TOKEN;
 
     if (!token) {
         console.error("Hey! GitHub Token is missing! Check your .env file.");
