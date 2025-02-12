@@ -29,6 +29,7 @@ jobs:
       - name: Deploy
         run: echo "Deploying..."
 
-      - name: Debug Environment Variables
-        run: echo "Token Loaded: $VITE_GITHUB_TOKEN"
-
+      - name: Debug GitHub Secret
+        run: echo "VITE_GITHUB_TOKEN is set"
+        env:
+          VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
