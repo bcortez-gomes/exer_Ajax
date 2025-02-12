@@ -8,11 +8,12 @@ document.addEventListener('DOMContentLoaded', function(){
     const linkElement = document.querySelector('#link');
 
     const endpoint = `https://api.github.com/users/bcortez-gomes`;
-    const token = process.env.VITE_GITHUB_TOKEN;
+    console.log("GitHub Token Loaded:", import.meta.env.VITE_GITHUB_TOKEN);
+    const token = import.meta.env.VITE_GITHUB_TOKEN;
 
 
     if (!token) {
-        console.error("⚠️ GitHub Token is missing! Check your .env file.");
+        console.error("Hey! GitHub Token is missing! Check your .env file.");
         return;
     }
 
@@ -33,5 +34,5 @@ document.addEventListener('DOMContentLoaded', function(){
         reposElement.innerText = json.public_repos;
         linkElement.href = json.html_url;
     })
-    .catch(err => console.error("❌ API Request Failed:", err));
+    .catch(err => console.error("Hey! API Request Failed:", err));
 })
