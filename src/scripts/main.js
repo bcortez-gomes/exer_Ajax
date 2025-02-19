@@ -1,36 +1,27 @@
-document.addEventListener('DOMContentLoaded', function(){
-    const nameElement = document.querySelector('#name');
-    const usernameElement =  document.querySelector('#username');
-    const avatarElement = document.querySelector('#avatar');
-    const reposElement = document.querySelector('#repos');
-    const followersElement =  document.querySelector('#followers');
-    const followingElement = document.querySelector('#following');
-    const linkElement = document.querySelector('#link');
+const GITHUB_USERNAME = "bcortez-gomes";
 
-    const endpoint = `https://api.github.com/users/bcortez-gomes`;
-    const token = process.env.VITE_GITHUB_TOKEN;
+async function fetchGitHubProfile(username) {
+    try {
+        const response = await fetch(`https://api.github.com/users/${username}`);
 
-    if (!token) {
-        console.error("Hey! GitHub Token is missing! Check your .env file.");
-        return;
-    }
-
-    fetch(endpoint, {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Accept": "application/vnd.github.v3+json"
+        if (!response.ok) {
+            throw new Error("GitHub user not found");
         }
-    })
-    .then(res => res.json())
-    .then(json => {
-        nameElement.innerText = json.name || "No Name";
-        usernameElement.innerText = json.login || "No Username";
-        avatarElement.src = json.avatar_url;
-        followingElement.innerText = json.following;
-        followersElement.innerText = json.followers;
-        reposElement.innerText = json.public_repos;
-        linkElement.href = json.html_url;
-    })
-    .catch(err => console.error("Hey! API Request Failed:", err));
-})
+
+        const user = await response.json();
+
+        document.getElementById("avatar").src = user.avatar_url;
+        document.getElementById("name").textContent = user.name || "No Name";
+        document.getElementById("username").textContent = `@${user.login}`;
+        document.getElementById("repos").innerHTML = `<h4>Repositórios</h4> ${user.public_repos}`;
+        document.getElementById("followers").innerHTML = `<h4>Seguidores</h4> ${user.followers}`;
+        document.getElementById("following").innerHTML = `<h4>Seguindo</h4> ${user.following}`;
+        document.getElementById("link").href = user.html_url;
+        document.getElementById("link").textContent = "Ver no Github";
+
+    } catch (error) {
+        console.error("Error fetching GitHub data:", error);
+    }
+}
+
+fetchGitHubProfile(GITHUB_USERNAME);
